@@ -4,11 +4,11 @@ const util = require("util");
 const question = util.promisify(RL.question).bind(RL);
 
 async function teste() {
-  const amperetotal = await question("quantos de ampere total?\n");
-  const voltagem = await question("quantos de voltagem usara?\n");
-  const bateriaA = await question("quantos de ampere na bateria?\n");
-  const BateriaV = await question("quantos de voltagem na bateria?\n");
-  const hora = await question("quantas horas será usado?\n");
+  const amperetotal = await question("quantos de corrente total?\n");
+  const voltagem = await question("Qual tensão?\n");
+  const bateriaA = await question("quantos de corrente tem a bateria?\n");
+  const BateriaV = await question("quantos de tensão há bateria?\n");
+  const hora = await question("quantas horas serão usadas? (1 = 1hr)\n");
 
   // let amperetotal = 4900;
   // let voltagem = 7.4;
