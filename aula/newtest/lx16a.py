@@ -577,7 +577,17 @@ class LX16A:
         received = LX16A._read_packet(2, self._id)
         angle = received[0] + received[1] * 256
         #return LX16A._from_servo_range(angle - 65536 if angle > 32767 else angle)
-        return angle 
+        return received[0]
+
+
+    def get_physical_angle1(self) -> float:
+        packet = [self._id, 3, 28]
+        LX16A._send_packet(packet)
+
+        received = LX16A._read_packet(2, self._id)
+        angle = received[0] + received[1] * 256
+        #return LX16A._from_servo_range(angle - 65536 if angle > 32767 else angle)
+        return received[1]
 
     def get_commanded_angle(self) -> float:
         return LX16A._from_servo_range(self._commanded_angle)
