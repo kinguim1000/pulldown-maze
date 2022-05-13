@@ -1,11 +1,13 @@
+import string
 from pylx16a.lx16a import *
 import time
 
 LX16A.initialize("/dev/ttyUSB0")
 
 try:
+    
+    #servo = LX16A(1)
     servo1 = LX16A(1)
-    #servo2 = LX16A(3)
     #servo1.disable_torque
     #servo2.disable_torque
 
@@ -32,29 +34,20 @@ while True:
     #if servo2.get_physical_angle() < 2000:
      #   if state == True:
       #      state = False
-    servo1.motor_mode(100)
-    if setor == 0:
-        angulo = servo1.get_physical_angle()/255*60    
-    elif setor == 1:
-        angulo = (servo1.get_physical_angle()/255*60)+60
-    elif setor == 2:
-        angulo = (servo1.get_physical_angle()/255*60)+120
-    elif setor == 3:
-        angulo = (servo1.get_physical_angle()/255*60)+180
+    #if setor == 0:
+    angulo = servo1.get_physical_angle()   
+    #elif setor == 1:
+    #    angulo = (servo1.get_physical_angle()/255*60)+60
+    #elif setor == 2:
+    #    angulo = (servo1.get_physical_angle()/255*60)+120
+    #elif setor == 3:
+    #    angulo = (servo1.get_physical_angle()/255*60)+180
         
-    elif setor == 4:
-        angulo = (servo1.get_physical_angle()/255*60)+240
-        for a in range(5):
-            anguloanterior = angulo
-            angulo = ((servo1.get_physical_angle()/255*60)+240+anguloanterior)/2
-    elif setor == 5:
-        angulo = (servo1.get_physical_angle()/255*60)+300
-        
-        anguloanterior = angulo
-        angulo = ((servo1.get_physical_angle()/255*60)+300+anguloanterior)/2
+    #elif setor == 4:
+    #    angulo = (servo1.get_physical_angle()/255*60)+240
+    #elif setor == 5:
+    #    angulo = (servo1.get_physical_angle()/255*60)+300
     
-    print(angulo)
-    if angulo >= 240:
-        servo1.motor_mode(100)
-    else:
-        servo1.motor_mode(200)
+    
+    print(str(angulo)+"  //  "+str(setor))
+    servo1.motor_mode(100)
