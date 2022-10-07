@@ -81,14 +81,36 @@ def whatColor():
 Px = 0
 Py = 0
 Pz = 0
-
-print("preloop")
-
+def sign(q):
+    if q>0:
+        return 1
+    elif q<0: 
+        return -1
+    else:
+        return 0
+#print("preloop")
+vel = 0
+kp = 0.8 #constante de prop
+ki = 0 #constante de integral
+kd = 0 #constante de derivada
+I = 0 #integral
+pe = 0 #anterior
+setpoint = 0.2 #ponto que queremos
 while robot.step(timeStep) != -1:
+    e = distf()-setpoint
+    P = e
+    I = e+I
+    D = e - pe
+    pid = P*kp + I*ki + D*kd 
+    vel = (6/((1/pid)+1))*sign(pid)
+    pe = e
+    motor(vel,vel)
+    
+    print(pid)
     #
-    print("entrou no loop")
+    #print("entrou no loop")
     #O = gps.getValues()[2]
-    image = colorSensor.getImage()
+    #image = colorSensor.getImage()
     
    # if s1.getValue() < 0.1:
     #    speed2 = max_velocity/2
@@ -100,24 +122,24 @@ while robot.step(timeStep) != -1:
     #    speed1 = max_velocity
     #    speed2 = -max_velocity
 
-    x = gps.getValues()[0] # Step 4: Use the getValues() function to get the sensor readings
-    y = gps.getValues()[1] # Note that the gps returns a list of 3 values for x, y, z, position
-    z = gps.getValues()[2]
-    Px = abs(Px) - abs(x)
-    Py = abs(Py) - abs(y)
-    Pz = abs(Pz) - abs(z)
+    #x = gps.getValues()[0] # Step 4: Use the getValues() function to get the sensor readings
+    #y = gps.getValues()[1] # Note that the gps returns a list of 3 values for x, y, z, position
+    #z = gps.getValues()[2]
+    #Px = abs(Px) - abs(x)
+    #Py = abs(Py) - abs(y)
+    #Pz = abs(Pz) - abs(z)
     #while rightEncoder.getValue() < 0.20096:
     #    motor(1,1)
     #motor(0,0)
     #break
-    print("GGGGG")
-    o = gps.getValues()[2]
-    while abs(O)+0.3 > abs(z):
-        z = gps.getValues()[2]
-        motor(1,1)
-        print("fffffff")
-    print(rightEncoder.getValue())
-    break
+    #print("GGGGG")
+    #o = gps.getValues()[2]
+    #while abs(O)+0.3 > abs(z):
+    #    z = gps.getValues()[2]
+    #    motor(1,1)
+    #    print("fffffff")
+    #print(rightEncoder.getValue())
+    #break
     #print("x: " + str(Px) + " y: " + str(Py) + " z: " + str(Pz))
     #print ("esquerda: " + str(s1.getValue())  + " frente: " + str(distf()) + " direita: " + str(s4.getValue()))
     #print("esquerda: " + str(leftEncoder.getValue()) + " direita: " + str(rightEncoder.getValue()))
