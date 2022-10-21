@@ -116,7 +116,7 @@ while robot.step(timeStep) != -1:
     #pe = e
     #motor(vel,vel)
     #print(e)
-    motor(-50,50)
+    motor(50,50)
     media = (abs(leftEncoder.getValue()) + abs(rightEncoder.getValue()))/2
     # print(media)
    # off = abs(abs(leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
@@ -127,7 +127,15 @@ while robot.step(timeStep) != -1:
     if (leftEncoder.getValue() >= 2.41152 and rightEncoder.getValue() <= -2.00332) or (rightEncoder.getValue() >= 2.41152 and leftEncoder.getValue() <= -2.00332):
         motor(0,0)
     if whatColor() == "black":
+        left = leftEncoder.getValue()
+        right = rightEncoder.getValue()
         
+        while leftEncoder.getValue() - left >= -3.27188:
+            motor(-50,-50)
+
+        motor(0,0)
+            #metade = 3.27188
+
     #print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
     #print(distf())
     #print("entrou no loop")
