@@ -40,6 +40,8 @@ colorSensor = robot.getDevice("colour_sensor") # Step 2: Retrieve the sensor, na
 colorSensor.enable(timeStep) # Step 3: Enable the sensor, using the timestep as the update rate
 #colorUpdate
 def color ():
+    
+    image = colorSensor.getImage()
     return [colorSensor.imageGetRed(image, 1, 0, 0), colorSensor.imageGetGreen(image, 1, 0, 0), colorSensor.imageGetBlue(image, 1, 0, 0)]
 
 
@@ -125,8 +127,7 @@ while robot.step(timeStep) != -1:
     if (leftEncoder.getValue() >= 2.41152 and rightEncoder.getValue() <= -2.00332) or (rightEncoder.getValue() >= 2.41152 and leftEncoder.getValue() <= -2.00332):
         motor(0,0)
     if whatColor() == "black":
-        print("igor")
-    
+        
     #print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
     #print(distf())
     #print("entrou no loop")
