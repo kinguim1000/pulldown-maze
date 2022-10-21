@@ -97,6 +97,15 @@ def sign(q):
         return -1
     else:
         return 0
+
+
+
+def turn():
+    PreviousLeft = leftEncoder
+    leftEncoder.getValue() - PreviousLeft
+
+
+
 #print("preloop")
 vel = 50
 kpR = 0.5 #prop da rotação
@@ -107,31 +116,44 @@ I = 0 #integral
 pe = 0 #anterior (previous error)
 setpoint = 0.04 #ponto que queremos
 while robot.step(timeStep) != -1:
-    #e = distf()-setpoint #error
-    #P = e 
-    #I = e+I
-    #D = e - pe
-    #pid = P*kp + I*ki + D*kd 
-    #vel = (100/((1/(100*pid*pid))+1))*sign(pid)
-    #pe = e
-    #motor(vel,vel)
+    e = distf()-setpoint #error
+    P = e 
+    I = e+I
+    D = e - pe
+    pid = P*kp + I*ki + D*kd 
+    vel = (100/((1/(100*pid*pid))+1))*sign(pid)
+    pe = e
+   # motor(vel,vel)
     #print(e)
-    motor(50,50)
+    #motor(50,50)
+    
     media = (abs(leftEncoder.getValue()) + abs(rightEncoder.getValue()))/2
     # print(media)
-   # off = abs(abs(leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
+    off = abs(abs(leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
    # print(off)
-   # motor(vel + off * kpR * sign(rightEncoder.getValue()) , vel + off * kpR * sign(leftEncoder.getValue()))
+    motor(vel + off * kpR * sign(rightEncoder.getValue()) , vel + off * kpR * sign(leftEncoder.getValue())) #tem q pega a diferença anterior e atual
     #motor(vel + 0.4082 * sign(rightEncoder.getValue()) , vel + 0.4082 * sign(leftEncoder.getValue()))
+    print(vel)
     
+    
+    
+   # if vel < 1:
+   #     if s1.getValue() < 0.5:
+   #         while:
+     #           motor(50,-50)
+
+        
+            
     if (leftEncoder.getValue() >= 2.41152 and rightEncoder.getValue() <= -2.00332) or (rightEncoder.getValue() >= 2.41152 and leftEncoder.getValue() <= -2.00332):
-        motor(0,0)
+        motor(0,0)#parar após rotacionar
     if whatColor() == "black":
         left = leftEncoder.getValue()
-        right = rightEncoder.getValue()
+        print(left)
         
         while leftEncoder.getValue() - left >= -3.27188:
+            print("qualquer coisa")
             motor(-50,-50)
+            
 
         motor(0,0)
             #metade = 3.27188
