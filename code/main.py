@@ -25,9 +25,10 @@ gps = robot.getDevice("gps")
 
 #Motor
 def motor(vel1,vel2):
-    wheel1.setVelocity(vel1)
-    wheel2.setVelocity(vel2)
+    wheel1.setVelocity(vel1/50)
+    wheel2.setVelocity(vel2/50)
 
+#qual é o valor base?
 
 #Girar uma volta para esquerda
     # if distf() <= 0.04167736680014455: 
@@ -69,6 +70,7 @@ start = robot.getTime()
 
 #Color
 def whatColor():
+    image = colorSensor.getImage()
     r = colorSensor.imageGetRed(image, 1, 0, 0)
     g = colorSensor.imageGetGreen(image, 1, 0, 0)
     b = colorSensor.imageGetBlue(image, 1, 0, 0)
@@ -76,11 +78,11 @@ def whatColor():
 
     if colorSens[0] < 100 and colorSens[1] < 100 and colorSens[2] < 100 :
         return "black"
-    if colorSens[0] > 200  and colorSens[1] > 200 and colorSens[2] < 200 and colorSens[2] > 100:
+    elif colorSens[0] > 200  and colorSens[1] > 200 and colorSens[2] < 200 and colorSens[2] > 100:
         return "yellow"
-    if colorSens[0] > 200 and colorSens[1] > 200 and colorSens[2] > 200 and colorSens[0] != 255 and colorSens[1] != 255 and colorSens[2] != 255:
+    elif colorSens[0] > 200 and colorSens[1] > 200 and colorSens[2] > 200 and colorSens[0] != 255 and colorSens[1] != 255 and colorSens[2] != 255:
         return "white"
-    if colorSens[0] == 255 and colorSens[1] == 255 and colorSens[2] == 255:
+    elif colorSens[0] == 255 and colorSens[1] == 255 and colorSens[2] == 255:
         return "checkpoint"
 
 Px = 0
@@ -94,24 +96,38 @@ def sign(q):
     else:
         return 0
 #print("preloop")
-vel = 0
+vel = 50
+kpR = 0.5 #prop da rotação
 kp = 1.5 #constante de prop
 ki = 0 #constante de integral
 kd = 0 #constante de derivada
 I = 0 #integral
-pe = 0 #anterior
+pe = 0 #anterior (previous error)
 setpoint = 0.04 #ponto que queremos
 while robot.step(timeStep) != -1:
-    e = distf()-setpoint
-    P = e
-    I = e+I
-    D = e - pe
-    pid = P*kp + I*ki + D*kd 
-    vel = (6/((1/pid)+1))*sign(pid)
-    pe = e
-   
+    #e = distf()-setpoint #error
+    #P = e 
+    #I = e+I
+    #D = e - pe
+    #pid = P*kp + I*ki + D*kd 
+    #vel = (100/((1/(100*pid*pid))+1))*sign(pid)
+    #pe = e
+    #motor(vel,vel)
+    #print(e)
+    motor(-50,50)
+    media = (abs(leftEncoder.getValue()) + abs(rightEncoder.getValue()))/2
+    # print(media)
+   # off = abs(abs(leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
+   # print(off)
+   # motor(vel + off * kpR * sign(rightEncoder.getValue()) , vel + off * kpR * sign(leftEncoder.getValue()))
+    #motor(vel + 0.4082 * sign(rightEncoder.getValue()) , vel + 0.4082 * sign(leftEncoder.getValue()))
     
-    print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
+    if (leftEncoder.getValue() >= 2.41152 and rightEncoder.getValue() <= -2.00332) or (rightEncoder.getValue() >= 2.41152 and leftEncoder.getValue() <= -2.00332):
+        motor(0,0)
+    if whatColor() == "black":
+        print("igor")
+    
+    #print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
     #print(distf())
     #print("entrou no loop")
     #O = gps.getValues()[2]
