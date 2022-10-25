@@ -31,7 +31,7 @@ def motor(vel1,vel2):
 #qual é o valor base?
 
 #Girar uma volta para esquerda
-    # if distf() <= 0.04167736680014455: 
+    # if distf() <= 0.04167736680014455: 1
     #    motor(0, 0)
 
 
@@ -101,7 +101,7 @@ def sign(q):
 
 
 def turn():
-    PreviousLeft = leftEncoder
+    PreviousLeft = leftEncoder.getValue()
     leftEncoder.getValue() - PreviousLeft
 
 
