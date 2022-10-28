@@ -3,7 +3,6 @@ import math
 from controller import PositionSensor
 timeStep = 32            # Set the time step for the simulation
 max_velocity = 6.28      # Set a maximum velocity time constant
-
 # Make robot controller instance
 robot = Robot()
 
@@ -29,7 +28,7 @@ def motor(vel1,vel2):
 
 #Globais
 velg = 50
-kpRg = 0.5 #prop da rotação
+kpRg = 1 #prop da rotação
 
 kp = 1.5 #constante de prop
 ki = 0 #constante de integral
@@ -104,20 +103,48 @@ def sign(q):
 
 
 
-def saveState():
-    previousLeft = leftEncoder.getValue()
-    previousRight = rightEncoder.getValue() #salva posição dos enconders
-def turn(sentido, vel,kpR): #kpR = constante proporcional da rotação
-    saveState()
-    motor(sentido, -sentido)
-    while not(previousLeft-leftEncoder.getValue() >= 2.41152 and previousRight-rightEncoder.getValue() <= -2.00332) or not(previousRight-rightEncoder.getValue() >= 2.41152 and previousLeft-leftEncoder.getValue() <= -2.00332):
-        media = (abs(previousLeft-leftEncoder.getValue()) + abs(previousRight-rightEncoder.getValue()))/2 #erro
-        off = abs(abs(previousLeft-leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
-        motor(vel + off * kpR * sign(previousRight-rightEncoder.getValue()) , vel + off * kpR * sign(previousLeft-leftEncoder.getValue())) 
-        print(vel)
+def turn(sentido,kpt):
+    L = leftEncoder.getValue()
+    R = rightEncoder.getValue()
+    previousLeft = L
+    previousRight = R
+    print("1")
+    if sentido == 0 :
+        setL = 2.41152
+        setR = -2.00332
+        S = 1
+        print("direita")
+    elif sentido == 1 :
+        setL = -2.00332
+        setR = 2.41152
+        S = -1
+        print("esquerda")
+    print("4")
+    while (S*(previousLeft - L) <  S*(setL) and S*(previousRight - R)  > S*setR):
+            L = leftEncoder.getValue()
+            R = rightEncoder.getValue()
+            media = ((abs(previousLeft-L) + abs(previousRight-R))/2)+1#erro
+            motor((S*(100/(1+(1/(media*kpt))))) ,-S*(100/(1+(1/(media*kpt)))))
+            print((S*(100/(1+(1/(media*kpt))))))
+            print("5")
+    print("6")
+    motor(0,0)
+# def turn(sentido, vel,kpR): #kpR = constante proporcional da rotação
+#     previousLeft = leftEncoder.getValue()
+#     previousRight = rightEncoder.getValue()#salva posição dos enconders
+#     match sentido:
+#         case 0:
+#             motor(50, -50)
+#         case 1:
+#             motor(-50,50)
+#     while not(previousLeft-leftEncoder.getValue() >= 2.41152 and previousRight-rightEncoder.getValue() <= -2.00332) or not(previousRight-rightEncoder.getValue() >= 2.41152 and previousLeft-leftEncoder.getValue() <= -2.00332):
+#         media = (abs(previousLeft-leftEncoder.getValue()) + abs(previousRight-rightEncoder.getValue()))/2 #erro
+#         off = abs(abs(previousLeft-leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
+#         motor(vel + off * kpR * sign(previousRight-rightEncoder.getValue()) , vel + off * kpR * sign(previousLeft-leftEncoder.getValue())) 
+#         print(vel)
         
           
-    motor(0,0)#parar após rotacionar
+    #motor(0,0)#parar após rotacionar
     
 def front(lsetpoint, lkp, lki, lkd):
     global I, P, D, e, pe
@@ -145,63 +172,10 @@ def inTest():#prototypes
 
     
 #print("preloop")
-
+print(timeStep)
 while robot.step(timeStep) != -1:
-    
-    # saveState()#salva o ponto que parou
-    # front(setpoint,kp,ki,kd)
-    # inTest()
-    turn(1, velg, kpRg)
+    print("7")
+    turn(0,kpRg)
 
     
-    #motor(vel,vel)
-    #print(e)
-    #motor(50,50)
     
-    
-            #metade = 3.27188
-
-    #print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
-    #print(distf())
-    #print("entrou no loop")
-    #O = gps.getValues()[2]
-    #image = colorSensor.getImage()
-    
-   # if s1.getValue() < 0.1:
-    #    speed2 = max_velocity/2
-
-    #if s4.getValue() < 0.1:
-    #    speed1 = max_velocity/2
-
-    #if s2.getValue() < 0.1:
-    #    speed1 = max_velocity
-    #    speed2 = -max_velocity
-
-    #x = gps.getValues()[0] # Step 4: Use the getValues() function to get the sensor readings
-    #y = gps.getValues()[1] # Note that the gps returns a list of 3 values for x, y, z, position
-    #z = gps.getValues()[2]
-    #Px = abs(Px) - abs(x)
-    # Py = abs(Py) - abs(y)
-    #Pz = abs(Pz) - abs(z)
-    #while rightEncoder.getValue() < 0.20096:
-    #    motor(1,1)
-    #motor(0,0)
-    #break
-    #print("GGGGG")
-    #o = gps.getValues()[2]
-    #while abs(O)+0.3 > abs(z):
-    #    z = gps.getValues()[2]
-    #    motor(1,1)
-    #    print("fffffff")
-    #print(rightEncoder.getValue())
-    #break
-    #print("x: " + str(Px) + " y: " + str(Py) + " z: " + str(Pz))
-    #print ("esquerda: " + str(s1.getValue())  + " frente: " + str(distf()) + " direita: " + str(s4.getValue()))
-    #print("esquerda: " + str(leftEncoder.getValue()) + " direita: " + str(rightEncoder.getValue()))
-    #print("r: " + str(r) + " g: " + str(g) + " b: " + str(b))
-    
-
-    #if leftEncoder.getValue() > 5.0:    #anda um ladrilho e para
-        #motor(0,0)
-
-    #if r > 200  and g > 200 and b < 200 and b > 100:
