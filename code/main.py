@@ -1,4 +1,3 @@
-from turtle import left
 from controller import Robot
 import math
 from controller import PositionSensor
@@ -28,11 +27,16 @@ def motor(vel1,vel2):
     wheel1.setVelocity(vel1/50)
     wheel2.setVelocity(vel2/50)
 
-#qual é o valor base?
+#Globais
+velg = 50
+kpRg = 0.5 #prop da rotação
 
-#Girar uma volta para esquerda
-    # if distf() <= 0.04167736680014455: 1
-    #    motor(0, 0)
+kp = 1.5 #constante de prop
+ki = 0 #constante de integral
+kd = 0 #constante de derivada
+I = 0 #integral
+pe = 0 #anterior (previous error)
+setpoint = 0.04 #ponto que queremos
 
 
 #Color sensor
@@ -100,52 +104,33 @@ def sign(q):
 
 
 
-def turn():
-    PreviousLeft = leftEncoder.getValue()
-    leftEncoder.getValue() - PreviousLeft
-
-
-
-#print("preloop")
-vel = 50
-kpR = 0.5 #prop da rotação
-kp = 1.5 #constante de prop
-ki = 0 #constante de integral
-kd = 0 #constante de derivada
-I = 0 #integral
-pe = 0 #anterior (previous error)
-setpoint = 0.04 #ponto que queremos
-while robot.step(timeStep) != -1:
-    e = distf()-setpoint #error
+def saveState():
+    previousLeft = leftEncoder.getValue()
+    previousRight = rightEncoder.getValue() #salva posição dos enconders
+def turn(sentido, vel,kpR): #kpR = constante proporcional da rotação
+    saveState()
+    motor(sentido, -sentido)
+    while not(previousLeft-leftEncoder.getValue() >= 2.41152 and previousRight-rightEncoder.getValue() <= -2.00332) or not(previousRight-rightEncoder.getValue() >= 2.41152 and previousLeft-leftEncoder.getValue() <= -2.00332):
+        media = (abs(previousLeft-leftEncoder.getValue()) + abs(previousRight-rightEncoder.getValue()))/2 #erro
+        off = abs(abs(previousLeft-leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
+        motor(vel + off * kpR * sign(previousRight-rightEncoder.getValue()) , vel + off * kpR * sign(previousLeft-leftEncoder.getValue())) 
+        print(vel)
+        
+          
+    motor(0,0)#parar após rotacionar
+    
+def front(lsetpoint, lkp, lki, lkd):
+    global I, P, D, e, pe
+    e = distf()-lsetpoint #error
     P = e 
     I = e+I
     D = e - pe
-    pid = P*kp + I*ki + D*kd 
+    pid = P*lkp + I*lki + D*lkd 
     vel = (100/((1/(100*pid*pid))+1))*sign(pid)
     pe = e
-   # motor(vel,vel)
-    #print(e)
-    #motor(50,50)
-    
-    media = (abs(leftEncoder.getValue()) + abs(rightEncoder.getValue()))/2
-    # print(media)
-    off = abs(abs(leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
-   # print(off)
-    motor(vel + off * kpR * sign(rightEncoder.getValue()) , vel + off * kpR * sign(leftEncoder.getValue())) #tem q pega a diferença anterior e atual
-    #motor(vel + 0.4082 * sign(rightEncoder.getValue()) , vel + 0.4082 * sign(leftEncoder.getValue()))
-    print(vel)
-    
-    
-    
-   # if vel < 1:
-   #     if s1.getValue() < 0.5:
-   #         while:
-     #           motor(50,-50)
+    motor(vel,vel)
 
-        
-            
-    if (leftEncoder.getValue() >= 2.41152 and rightEncoder.getValue() <= -2.00332) or (rightEncoder.getValue() >= 2.41152 and leftEncoder.getValue() <= -2.00332):
-        motor(0,0)#parar após rotacionar
+def inTest():#prototypes
     if whatColor() == "black":
         left = leftEncoder.getValue()
         print(left)
@@ -156,6 +141,24 @@ while robot.step(timeStep) != -1:
             
 
         motor(0,0)
+
+
+    
+#print("preloop")
+
+while robot.step(timeStep) != -1:
+    
+    # saveState()#salva o ponto que parou
+    # front(setpoint,kp,ki,kd)
+    # inTest()
+    turn(1, velg, kpRg)
+
+    
+    #motor(vel,vel)
+    #print(e)
+    #motor(50,50)
+    
+    
             #metade = 3.27188
 
     #print(str(leftEncoder.getValue()) + "     " + str(rightEncoder.getValue()))
@@ -178,7 +181,7 @@ while robot.step(timeStep) != -1:
     #y = gps.getValues()[1] # Note that the gps returns a list of 3 values for x, y, z, position
     #z = gps.getValues()[2]
     #Px = abs(Px) - abs(x)
-    #Py = abs(Py) - abs(y)
+    # Py = abs(Py) - abs(y)
     #Pz = abs(Pz) - abs(z)
     #while rightEncoder.getValue() < 0.20096:
     #    motor(1,1)
