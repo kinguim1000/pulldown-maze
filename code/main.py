@@ -66,7 +66,7 @@ s4.enable(timeStep)
 def distf():
     x = s2.getValue()
     y = s3.getValue()
-    return (x*y)/(2*(x+y)*0.2588190451)
+    return (x*y)/(2*(x+y)*0.25882)
 # Mini visualiser for the distance senors on the console
 
 
@@ -103,48 +103,39 @@ def sign(q):
 
 
 
-def turn(sentido,kpt):
-    L = leftEncoder.getValue()
-    R = rightEncoder.getValue()
-    previousLeft = L
-    previousRight = R
-    print("1")
+#while timeStep != 1:
+    #print("7")
+    #turn(1,2)
+
+def turn(sentido):
+    Esquerda = leftEncoder.getValue()
+    Direita= rightEncoder.getValue()
+    firstLeft = Esquerda
+    firstRight = Direita
+    kpt = 1
+    print(sentido)
     if sentido == 0 :
-        setL = 2.41152
-        setR = -2.00332
+        setEsquerda = 2.41152
+        setDireita = -2.00332
         S = 1
         print("direita")
     elif sentido == 1 :
-        setL = -2.00332
-        setR = 2.41152
-        S = -1
-        print("esquerda")
+       setEsquerda = -2.00332
+       setDireita = 2.41152
+       S = -1
+       print("esquerda")    
     print("4")
-    while (S*(previousLeft - L) <  S*(setL) and S*(previousRight - R)  > S*setR):
-            L = leftEncoder.getValue()
-            R = rightEncoder.getValue()
-            media = ((abs(previousLeft-L) + abs(previousRight-R))/2)+1#erro
-            motor((S*(100/(1+(1/(media*kpt))))) ,-S*(100/(1+(1/(media*kpt)))))
-            print((S*(100/(1+(1/(media*kpt))))))
-            print("5")
-    print("6")
-    motor(0,0)
-# def turn(sentido, vel,kpR): #kpR = constante proporcional da rotação
-#     previousLeft = leftEncoder.getValue()
-#     previousRight = rightEncoder.getValue()#salva posição dos enconders
-#     match sentido:
-#         case 0:
-#             motor(50, -50)
-#         case 1:
-#             motor(-50,50)
-#     while not(previousLeft-leftEncoder.getValue() >= 2.41152 and previousRight-rightEncoder.getValue() <= -2.00332) or not(previousRight-rightEncoder.getValue() >= 2.41152 and previousLeft-leftEncoder.getValue() <= -2.00332):
-#         media = (abs(previousLeft-leftEncoder.getValue()) + abs(previousRight-rightEncoder.getValue()))/2 #erro
-#         off = abs(abs(previousLeft-leftEncoder.getValue()) - media) #< ou > - media = diferença dos enc
-#         motor(vel + off * kpR * sign(previousRight-rightEncoder.getValue()) , vel + off * kpR * sign(previousLeft-leftEncoder.getValue())) 
-#         print(vel)
         
-          
-    #motor(0,0)#parar após rotacionar
+    while (robot.step(timeStep) != -1) and ((S*(firstLeft - Esquerda) <  S*setEsquerda) and (S*(firstRight - Direita)  > S*setDireita)):
+        Esquerda = leftEncoder.getValue()
+        Direita = rightEncoder.getValue()
+        media = ((abs(firstLeft-Esquerda) + abs(firstRight-Direita))/2) + 1 #semi pid so com proporcional - erro
+        motor((S*(100/(1+(1/(media*kpt))))), -1*S*(100/(1+(1/(media*kpt))))) # semi pid de verdade
+        print((S*(100/(1+(1/(media*kpt))))))
+        #print("5")
+    #print("6")
+    motor(0,0)
+
     
 def front(lsetpoint, lkp, lki, lkd):
     global I, P, D, e, pe
@@ -163,7 +154,6 @@ def inTest():#prototypes
         print(left)
         
         while leftEncoder.getValue() - left >= -3.27188:
-            print("qualquer coisa")
             motor(-50,-50)
             
 
@@ -172,10 +162,10 @@ def inTest():#prototypes
 
     
 #print("preloop")
-print(timeStep)
+#print(timeStep)
+print("a")
 while robot.step(timeStep) != -1:
-    print("7")
-    turn(0,kpRg)
-
+    print("b")
+    turn(0)
     
     
