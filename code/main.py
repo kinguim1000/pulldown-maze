@@ -112,7 +112,7 @@ def turn(sentido):
     Direita= rightEncoder.getValue()
     firstLeft = Esquerda
     firstRight = Direita
-    kpt = 1
+    kpt = 0.1
     print(sentido)
     if sentido == 0 :
         setEsquerda = 2.41152
@@ -124,14 +124,13 @@ def turn(sentido):
        setDireita = 2.41152
        S = -1
        print("esquerda")    
-    print("4")
-        
-    while (robot.step(timeStep) != -1) and ((S*(firstLeft - Esquerda) <  S*setEsquerda) and (S*(firstRight - Direita)  > S*setDireita)):
+    media = 1
+    while (robot.step(timeStep) != -1 and media > 0.2):
         Esquerda = leftEncoder.getValue()
         Direita = rightEncoder.getValue()
-        media = ((abs(firstLeft-Esquerda) + abs(firstRight-Direita))/2) + 1 #semi pid so com proporcional - erro
-        motor((S*(100/(1+(1/(media*kpt))))), -1*S*(100/(1+(1/(media*kpt))))) # semi pid de verdade
-        print((S*(100/(1+(1/(media*kpt))))))
+        media =  (Direita - firstRight) - setDireita #semi pid so com proporcional - erro
+        motor((S*(100/(1+(1/(media*kpt))))), -1* S*(100/(1+(1/(media*kpt))))) # semi pid de verdade
+        print(media)
         #print("5")
     #print("6")
     motor(0,0)
@@ -163,9 +162,7 @@ def inTest():#prototypes
     
 #print("preloop")
 #print(timeStep)
-print("a")
 while robot.step(timeStep) != -1:
-    print("b")
     turn(0)
-    
+    break
     
