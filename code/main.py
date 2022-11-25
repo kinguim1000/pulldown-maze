@@ -149,7 +149,7 @@ def PID(lsetpoint, lkp, lki, lkd,e):
     I = e + I
     D = e - pe
     pid = P*lkp + I*lki + D*lkd
-    vel = (100/((1/((100*pid*pid)+0.001))+1))*sign(pid)
+    vel = (100/((1/((100*pid*pid)+0.001))+1))*sign(pid) 
     pe = e
     motor(vel,vel)
 def front():
@@ -163,9 +163,9 @@ def hole():#get back when find a hole
     if whatColor() == "black":
         left = leftEncoder.getValue()
         print("simao")
-        while (robot.step(timeStep) != -1 and leftEncoder.getValue() - left >= -6):
+        while (robot.step(timeStep) != -1 and leftEncoder.getValue() - left >= -1.5):
             print("kaua")
-            PID(6.1,5,kd,ki,left-leftEncoder.getValue())
+            PID(1.55,5,kd,ki,(leftEncoder.getValue()-left)-1.55) 
         if s4.getValue() < s1.getValue():
             turn(1)
         else:
