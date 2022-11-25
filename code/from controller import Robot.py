@@ -19,8 +19,6 @@ s1 = robot.getDevice("ps5")
 s2 = robot.getDevice("ps7")
 s3 = robot.getDevice("ps0")
 s4 = robot.getDevice("ps2")
-s5 = robot.getDevice("ps3")
-s6 = robot.getDevice("ps4")
 gps = robot.getDevice("gps")
 
 #Motor
@@ -37,8 +35,8 @@ ki = 0 #constante de integral
 kd = 0 #constante de derivada
 I = 0 #integral
 pe = 0 #anterior (previous error)
-setpoint = 0.04 #ponto que querem
-ladrilho = 6 # distancia encoder andar um ladrilho tanto pra frente quanto pra tras
+setpoint = 0.04 #ponto que queremos
+
 
 #Color sensor
 colorSensor = robot.getDevice("colour_sensor") # Step 2: Retrieve the sensor, named "colour_sensor", from the robot. Note that the sensor name may differ between robots)
@@ -65,16 +63,10 @@ s1.enable(timeStep)
 s2.enable(timeStep)
 s3.enable(timeStep)
 s4.enable(timeStep)
-s5.enable(timeStep)
-s6.enable(timeStep)
 def distf():
     x = s2.getValue()
     y = s3.getValue()
     return (x*y)/(2*(x+y)*0.25882)
-def distb():
-    x = s5.getValue()
-    y = s6.getValue()
-    return (x*y)/(x+y)
 # Mini visualiser for the distance senors on the console
 
 
@@ -133,53 +125,43 @@ def turn(sentido):
     motor(0,0)
 
     
-#def front(lsetpoint, lkp, lki, lkd):
-#    global I, P, D, e, pe
-#    e = distf()-lsetpoint #error
-#    P = e
-#    I = e + I
-#    D = e - pe
-#    pid = P*lkp + I*lki + D*lkd
-#    vel = (100/((1/(100*pid*pid))+1))*sign(pid)
-#    pe = e
-#    motor(vel,vel)
-def PID(lsetpoint, lkp, lki, lkd,e):
-    global I, P, D, pe
+def front(lsetpoint, lkp, lki, lkd):
+    global I, P, D, e, pe
+    e = distf()-lsetpoint #error
     P = e
     I = e + I
     D = e - pe
     pid = P*lkp + I*lki + D*lkd
-    vel = (100/((1/((100*pid*pid)+0.001))+1))*sign(pid)
+    vel = (100/((1/(100*pid*pid))+1))*sign(pid)
     pe = e
     motor(vel,vel)
-def front():
-    PID(setpoint,kp,kd,ki,distf()-setpoint)
 
-def back():
-    PID(setpoint,5,kd,ki,setpoint-distb())
-
-    
 def hole():#get back when find a hole
     if whatColor() == "black":
         left = leftEncoder.getValue()
-        print("simao")
-        while (robot.step(timeStep) != -1 and leftEncoder.getValue() - left >= -6):
-            print("kaua")
-            PID(6.1,5,kd,ki,left-leftEncoder.getValue())
+        print(left)
+        while (robot.step(timeStep) != -1 and leftEncoder.getValue() - left >= -1.63594):
+            motor(-50,-50)
         if s4.getValue() < s1.getValue():
             turn(1)
         else:
             turn(0)
         motor(0,0)
 
+def inTest():#prototypes
+    R = 0.082
+    
 #print("preloop")
 #print(timeStep)
 while robot.step(timeStep) != -1:
-    while robot.step(timeStep) != -1 and distf() > 0.05:
-        front()
-    turn(0)
-    while robot.step(timeStep) != -1 and True:
-        motor(100,100)
-        hole()
+   # while robot.step(timeStep) != -1 and distf() > 0.05:
+    #    front(setpoint, kp, ki, kd)
+   # turn(0)
+   # while robot.step(timeStep) != -1 and True:
+   #     motor(100,100)
+   #     hole()
+   #     break
+   # break
+    front(setpoint, kp, ki, kd)
+    print(leftEncoder.getValue())
         #while = while robot.step(timeStep) != -1 and   
-    print("igor")   
