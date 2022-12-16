@@ -192,7 +192,6 @@ def Corrigir():
     Erro = 1
     while robot.step(timeStep) != -1 and Erro > 0.2:
         Erro = (s4.getValue()/s8.getValue())
-        print(Erro)
         vel = PID(sin,1,0,0,Erro)
         motor(vel*Lado,-1*vel*Lado)
 
@@ -202,8 +201,9 @@ def Corrigir():
 #print(timeStep)ss
 
 while robot.step(timeStep) != -1:
-    for i in range(200):
-        motor(-50,50)
-    Corrigir()
-    motor(0,0)
-    break
+    
+    motor(-50,50)
+    if rightEncoder.getValue() < 1.6:
+        Corrigir()
+        motor(0,0)
+        break
