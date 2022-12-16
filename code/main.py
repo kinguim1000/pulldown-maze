@@ -21,6 +21,8 @@ s3 = robot.getDevice("ps0")
 s4 = robot.getDevice("ps2")
 s5 = robot.getDevice("ps3")
 s6 = robot.getDevice("ps4")
+s7 = robot.getDevice("ps6")
+s8 = robot.getDevice("ps1")
 gps = robot.getDevice("gps")
 
 #Motor
@@ -67,6 +69,8 @@ s3.enable(timeStep)
 s4.enable(timeStep)
 s5.enable(timeStep)
 s6.enable(timeStep)
+s7.enable(timeStep)
+s8.enable(timeStep)
 def distf():
     x = s2.getValue()
     y = s3.getValue()
@@ -112,23 +116,25 @@ def sign(q):
 
 
 
-
+# 0.20096 (erro de medida)
+# 2.04728
 def turn(sentido):
-    if sentido == 0:
-        L = leftEncoder.getValue()
-    elif sentido == 1:
-        L = rightEncoder.getValue()
-    firstL = L
-    kpt = 1
-    S = -(2*sentido - 1) 
-    media = -1
-    while (robot.step(timeStep) != -1 and media < -0.0001):
-        if sentido == 0:
+    #Funcão de virar 90⁰ pra esquerda ou pra direita
+    if sentido == 0: #Se receber 0 como input, vira pra esquerda
+        L = leftEncoder.getValue() 
+    elif sentido == 1: # Se receber 1 vira pra direita
+        L = rightEncoder.getValue() 
+    firstL = L #Primeira medicão do coiso pra poder tirar o offset incia 
+    kpt = 1 #Constante da Proporcional
+    S = -(2*sentido - 1) #Vudu matemático (????) (Ainda não sei exatamente o que isso faz, mas é importante)
+    media = -1 #Garante que sempre vai entrar
+    while  (robot.step(timeStep) != -1 and media < -0.0001): #Coisa bizarra do timestep e o valor em que setamos como sendo bom o suficiente pro erro
+        if sentido == 0: #Parte pra virar pra esquerda
             L = leftEncoder.getValue()
-        elif sentido == 1:
+        elif sentido == 1: #Parte pra virar pra direita
             L = rightEncoder.getValue()
-        media =  (L - firstL) - 2.41152  #semi pid so com proporcional - erro
-        motor((S*(100/(1+abs((1/(media*kpt)))))), -1* S*(100/(1+abs((1/(media*kpt)))))) # semi pid de verdade
+        media =  (L - firstL) - 2.04728  #semi pid so com proporcional - erro
+        motor((S*(100/(1+abs((1/(media*kpt)))))), -1* S*(100/(1+abs((1/(media*kpt)))))) # semi pid de verdade 
         print(L-firstL)
     motor(0,0)
 
@@ -151,35 +157,53 @@ def PID(lsetpoint, lkp, lki, lkd,e):
     pid = P*lkp + I*lki + D*lkd
     vel = (100/((1/((100*pid*pid)+0.001))+1))*sign(pid) 
     pe = e
-    motor(vel,vel)
+    return vel
 def front():
-    PID(setpoint,kp,kd,ki,distf()-setpoint)
-
+    Front = PID(setpoint,kp,kd,ki,distf()-setpoint)
+    motor(Front,Front)
 def back():
-    PID(setpoint,5,kd,ki,setpoint-distb())
-
+    Back = PID(setpoint,5,kd,ki,setpoint-distb())
+    motor(Back,Back)
     
 def hole():#get back when find a hole
     if whatColor() == "black":
         left = leftEncoder.getValue()
         print("simao")
         while (robot.step(timeStep) != -1 and leftEncoder.getValue() - left >= -1.5):
-            print("kaua")
-            PID(1.55,5,kd,ki,(leftEncoder.getValue()-left)-1.55) 
+            A = PID(1.55,5,kd,ki,(leftEncoder.getValue()-left)-1.55)
+            motor(A,A)
         if s4.getValue() < s1.getValue():
             turn(1)
         else:
             turn(0)
         motor(0,0)
+def Corrigir():
+    D0 = s4.getValue()#d do sensor lateral esquerdo
+    D1 = s8.getValue()#d do sensor lateral direito
+    for i in range(100):
+        motor(-100,100)#dá uma girada
+    motor(0,0)
+    D2 = s4.getValue()#pega os valores dnv
+    D3 = s8.getValue()
+    sin = 0.707106781187#sin (45)
+    Lado = 1#faz inverter na hora do motor
+    if (D0 - sin*D1) < (D2 - sin*D3):
+        Lado = -1
+    Erro = 1
+    while robot.step(timeStep) != -1 and Erro > 0.2:
+        Erro = (s4.getValue()/s8.getValue())
+        print(Erro)
+        vel = PID(sin,1,0,0,Erro)
+        motor(vel*Lado,-1*vel*Lado)
+
+
 
 #print("preloop")
-#print(timeStep)
+#print(timeStep)ss
+
 while robot.step(timeStep) != -1:
-    while robot.step(timeStep) != -1 and distf() > 0.05:
-        front()
-    turn(0)
-    while robot.step(timeStep) != -1 and True:
-        motor(100,100)
-        hole()
-        #while = while robot.step(timeStep) != -1 and   
-    print("igor")   
+    for i in range(200):
+        motor(-50,50)
+    Corrigir()
+    motor(0,0)
+    break

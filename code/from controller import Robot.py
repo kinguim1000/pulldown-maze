@@ -101,20 +101,17 @@ def sign(q):
     else:
         return 0
 
-
-
-
-
 def turn(sentido):
-    if sentido == 0:
-        L = leftEncoder.getValue()
-    elif sentido == 1:
-        L = rightEncoder.getValue()
-    firstL = L
-    kpt = 1
-    S = -(2*sentido - 1) 
-    media = -1
-    while (robot.step(timeStep) != -1 and media < -0.0001):
+    #Funcão de virar 90⁰ pra esquerda ou pra direita
+    if sentido == 0: #Se receber 0 como input, vira pra esquerda
+        L = leftEncoder.getValue() 
+    elif sentido == 1: # Se receber 1 vira pra direita
+        L = rightEncoder.getValue() 
+    firstL = L #Não sei
+    kpt = 1 #Constante da Proporcional (acho)
+    S = -(2*sentido - 1) #Vudu matemático (????)
+    media = -1 #Garante que sempre vai entrar
+    while (robot.step(timeStep) != -1 and media < -0.0001): #C
         if sentido == 0:
             L = leftEncoder.getValue()
         elif sentido == 1:
@@ -122,7 +119,7 @@ def turn(sentido):
         media =  (L - firstL) - 2.41152  #semi pid so com proporcional - erro
         motor((S*(100/(1+abs((1/(media*kpt)))))), -1* S*(100/(1+abs((1/(media*kpt)))))) # semi pid de verdade
         print(L-firstL)
-    motor(0,0)
+    motor(0,0)#:--: blz ._.Valeu, Vou ir pra lá ;)
 
     
 def front(lsetpoint, lkp, lki, lkd):
