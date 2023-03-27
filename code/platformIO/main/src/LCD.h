@@ -9,3 +9,9 @@ void LCD(byte x, byte y, float num){
     oled.setCursor (x, y); 
     oled.print(msg);
 }
+void LCDs(byte x, byte y, String num){
+  char msgs[80];
+    sprintf(msgs, "%s", num);
+    oled.setCursor (x, y); 
+    oled.print(msgs);
+}

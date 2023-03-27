@@ -26,8 +26,6 @@ void setup()
 #endif // RST_PIN >= 0
 
   oled.setFont(System5x7);
-  oled.clear();
-  oled.print("Hello world!");
 //   therm1.begin(0x5A);// Initialize thermal IR sensor
 // therm2.begin(0x5B);
 // therm3.begin(0x5C);
@@ -51,7 +49,8 @@ void loop()
   // Call therm.read() to read object and ambient temperatures from the sensor.
   // if (therm1.read() && therm2.read() && therm3.read() && therm4.read()) // On success, read() will return 1, on fail 0.
   // {
-    
+    LCD(0,0,Sensor1);
+    LCDs(100,20, "KO");
      Serial.print(Sensor1);
      Serial.println("K");
      Serial.println();
