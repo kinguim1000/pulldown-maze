@@ -101,11 +101,6 @@ namespace Sensores{
                 
                 
             }
-            bool VendoVitima(){
-                Atualizar();
-                if(Filtro > DesvioPadrao.Avg()+3*~DesvioPadrao){return true;}
-                return false;
-            }
             operator double(){
                 Atualizar();
                 return ValorAtual;
@@ -126,7 +121,40 @@ namespace Sensores{
             Kalman Filtro;
             double ValorAtual;
             IRTherm SDT;
+    };
+
+    class SensorUltrassonico{
+        public:
+            SensorUltrassonico(int Pino){
+                Pin = Pino;
+                                //Inserir código de escanear para encontrar o sensor com o coiso I2C. Retornar Erro se não encontrado
+            }
+            void Atualizar(){   //Inserir código de leitura de sensores aqui
+                pinMode(Pin, OUTPUT);
+                digitalWrite(Pin, LOW);
+                delayMicroseconds(2);
+                digitalWrite(Pin, HIGH);
+                delayMicroseconds(5);
+                digitalWrite(Pin, LOW);
+                pinMode(Pin, INPUT);
+                ValorAtual = microsecondsToCentimeters(pulseIn(Pin, HIGH));
+                delay(100);
+            }
+            operator double(){
+                Atualizar();
+                return ValorAtual;
+            }
+            
 
 
+
+        private:
+            int Pin;
+            double ValorAtual;
+            long microsecondsToCentimeters(long microseconds) {
+                return microseconds / 29 / 2;
+            }
     };
 }
+
+double* RGBtoCBCR(int r,int g, int b){return new double[3]{1,2,3};}

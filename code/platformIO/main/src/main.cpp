@@ -42,19 +42,14 @@ void setup()
   // TEMP_K for Kelvin.
   // LED pin as output
 }
-
 void loop() 
 {
     
   // Call therm.read() to read object and ambient temperatures from the sensor.
   // if (therm1.read() && therm2.read() && therm3.read() && therm4.read()) // On success, read() will return 1, on fail 0.
   // {
-    LCD(0,0,Sensor1);
-    LCDs(100,20, "KO");
-     Serial.print(Sensor1);
-     Serial.println("K");
-     Serial.println();
-  // // }
+
+    LCD(100,20, "KO");
   // delay(1000);
 
 }
