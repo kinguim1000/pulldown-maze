@@ -95,7 +95,7 @@ while True:
     #             movimento.mover(3, 600)
                 
     #         if event.key == pygame.K_w:
-    movimento.mover(1, 600)
+    movimento.mover(1, 0)
     #         if event.key == pygame.K_d:
     #             movimento.mover(4, 600)
     #         if event.key == pygame.K_s:
