@@ -1,16 +1,13 @@
 from pylx16a.lx16a import *
-import string
+import time
 import math
+import string
 LX16A.initialize("/dev/ttyUSB0")
 
 class motor:
-    def _init_(self,porta):
+    def __init__(self,porta):
         self.porta = porta
         self.rev = 0
-    def pos(self):
-        return str(math.floor(LX16A(self.porta).get_physical_angle()))#arredondar o mais perto, -48 -30 0  0 30 60  90 150 210 270
-    def move(self,vel1):
-        LX16A(self.porta).motor_mode(vel1)
     def setor(self):
         valor = math.floor(LX16A(self.porta).get_physical_angle())
         if(valor >= -48 and valor < 0):
@@ -25,6 +22,10 @@ class motor:
             return(4)
         else:
             return(5)
+    def pos(self):
+        return str(math.floor(LX16A(self.porta).get_physical_angle()))#arredondar o mais perto, -48 -30 0  0 30 60  90 150 210 270
+    def move(self,vel1):
+        LX16A(self.porta).motor_mode(vel1)
 motor1 = motor(1)
 motor2 = motor(2)
 motor3 = motor(3)
