@@ -84,4 +84,4 @@ def VirarDireita(vel):
     motor2.move(0)
     motor3.move(0)
     motor4.move(0)
-VirarDireita(500)
+VirarDireita(200)

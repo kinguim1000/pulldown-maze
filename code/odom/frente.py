@@ -79,12 +79,12 @@ class SensoresJuntos:
             else:
                 return self.motorTD.pos()
         return
-a = SensoresJuntos(motor1,motor2,motor3,motor4,270, 90)
+a = SensoresJuntos(motor1,motor2,motor4,motor3,270, 90)
 a.inicializar()
 def AndarDist(velocidade,distancia):
-    rotations = distancia/(7.5*pi)
+    rotations = distancia/(7*pi)
     init = a.Ler(0)
-    while(a.Ler(0) < (init + rotations)%360):
+    while(a.Ler(0) > (init + rotations)%360 + 5 or a.Ler(0) < (init + rotations)%360 - 5):
         motor1.move(-velocidade)
         motor2.move(velocidade)
         motor3.move(velocidade)
@@ -93,4 +93,4 @@ def AndarDist(velocidade,distancia):
     motor2.move(0)
     motor3.move(0)
     motor4.move(0)
-AndarDist(500,10)
+AndarDist(500,5)
