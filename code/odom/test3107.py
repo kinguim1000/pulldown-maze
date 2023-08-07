@@ -56,6 +56,9 @@ class IMU:
     def yaw(self):
         self.__Atualizar()
         return self.sensorfusion.yaw +180
+    def pitch(self):
+        self.__Atualizar()
+        return self.sensorfusion.pitch
     def Aceleracao(self):
         self.__Atualizar()
         return self.imu.AccelVals
@@ -270,7 +273,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza�
             if(self._acumulador[1] >= 1):
                 string = string +str(self._acumulador[1])+" rotações completas e "
             string = string +str(self._intencao[1])+" cm"
-        print(string + str(self._imu.yaw()))
+        print(string + str(self._imu.pitch()))
         return
 
     def Virar(self,lado,angulo):
