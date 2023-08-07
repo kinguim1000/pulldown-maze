@@ -5,6 +5,7 @@ import time
 import math
 LX16A.initialize("/dev/ttyUSB0")
 from imusensor.MPU9250 import MPU9250
+from imusensor.filters import kalman 
 import smbus
 def sqrt(n):
     x = n
@@ -39,13 +40,19 @@ class IMU:
         self.imu = MPU9250.MPU9250(smbus.SMBus(1), endereco)
         self.imu.begin()
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
+        self.sensorfusion = kalman.Kalman()
+
     def __Atualizar(self):
         self.imu.readSensor()
         self.imu.computeOrientation()
+        newTime = time.time()
+	    dt = newTime - currTime
+	    currTime = newTime
+        sensorfusion.computeAndUpdateRollPitchYaw(imu.AccelVals[0], imu.AccelVals[1], imu.AccelVals[2], imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2], imu.MagVals[0], imu.MagVals[1], imu.MagVals[2], dt)
         return
     def yaw(self):
         self.__Atualizar()
-        return self.imu.yaw +180
+        return self.sensorfusion.yaw +180
     def Aceleracao(self):
         self.__Atualizar()
         return self.imu.AccelVals
