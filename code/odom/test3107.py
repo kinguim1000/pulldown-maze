@@ -7,6 +7,7 @@ LX16A.initialize("/dev/ttyUSB0")
 from imusensor.MPU9250 import MPU9250
 from imusensor.filters import kalman 
 import smbus
+
 def sqrt(n):
     x = n
     for i in range(10):
@@ -41,8 +42,9 @@ class IMU:
         self.imu.begin()
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
         self.sensorfusion = kalman.Kalman()
-
+        currTime = time.time()
     def __Atualizar(self):
+        
         self.imu.readSensor()
         self.imu.computeOrientation()
         newTime = time.time()
