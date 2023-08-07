@@ -143,7 +143,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
         self._erro = [0,0,0,0]
         self._intencao = [0 ,0]
         self._acumulador = 0
-        self._vel = 100
+        self._vel = 150
         self._roda = 18
         self._pi = 104348/33215
         self._offset = 90
