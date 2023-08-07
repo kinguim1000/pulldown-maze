@@ -100,6 +100,7 @@ class SD:
         self.buffer = []
         self.recente = 0
         return
+
 class FuncAprox:
     def __init__(self):
         self.buffer = []
@@ -146,7 +147,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
         self._vel = 150
         self._roda = 18
         self._pi = 104348/33215
-        self._offset = 90
+        self._offset = 90 #offset de uma roda para outra, aqui para tentar consertar a p****** que acontece com os encoders
         self._lookup = {
             0:"Fazer nada",
             1:"Virar Direita",
@@ -163,7 +164,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
         self._motores[3].move(0)
         return
 
-    def __Boot(self):
+    def __Boot(self): #descobre os erros dos motores e em teoria tenta concertar eles :D
         vel = self._vel
         intencao = self._intencao[1]
         if intencao == 0 or intencao == 1 or intencao == 2 or intencao == 3:
@@ -185,12 +186,13 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
         else:
             self.__MudarIntencao(0,0)
             return
+
     def __LerMotores(self,lado):
         if lado == 0: #lado esquerdo
             if(self._motores[0].pos() >= self._erro[0]):
                 return self._motores[2].pos() + self._offset
             return self._motores[0].pos()
-        elif lado == 1:
+        elif lado == 1: #lado direito
             if(self._motores[1].pos() >= self._erro[1]):
                 return self._motores[3].pos() + self._offset
             return self._motores[1].pos()
@@ -215,9 +217,9 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
         self._intencao = [intencao,valor]
         return
 
-    def __VirarDireita(self):
+    def __VirarDireita(self): 
         vel = self._vel
-        if(self._imu.yaw() > self._acumulador - self._intencao[1]):
+        if(self._imu.yaw() > (self._acumulador - self._intencao[1] + 360)%360):
             self._motores[0].move(vel)
             self._motores[1].move(vel)
             self._motores[2].move(vel)
@@ -229,7 +231,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
     def __VirarEsquerda(self):
         vel = self._vel
-        if(self._imu.yaw() < self._acumulador + self._intencao[1]):
+        if(self._imu.yaw() < (self._acumulador + self._intencao[1])%360):
             self._motores[0].move(-vel)
             self._motores[1].move(-vel)
             self._motores[2].move(-vel)
@@ -326,6 +328,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
 PulldownMaze = Robo(2,1,4,3)
 PulldownMaze.Virar(0,90)
+
 while(True):
     PulldownMaze.Main()
     #isso √© o mais proximo de "if going_to_crash: Dont()" que vamos chegar, eu acho 
