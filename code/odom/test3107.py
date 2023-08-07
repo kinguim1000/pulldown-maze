@@ -49,8 +49,8 @@ class IMU:
         self.imu.readSensor()
         self.imu.computeOrientation()
         self.newTime = time.time()
-        self.dt = newTime - currTime
-        self.currTime = newTime
+        self.dt = self.newTime - self.currTime
+        self.currTime = self.newTime
         sensorfusion.computeAndUpdateRollPitchYaw(imu.AccelVals[0], imu.AccelVals[1], imu.AccelVals[2], imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2], imu.MagVals[0], imu.MagVals[1], imu.MagVals[2], dt)
         return
     def yaw(self):
