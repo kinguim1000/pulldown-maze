@@ -5,7 +5,7 @@ import time
 import math
 LX16A.initialize("/dev/ttyUSB0")
 from imusensor.MPU9250 import MPU9250
-from imusensor.filters import kalman 
+from imusensor.filters import madgwick
 import smbus
 
 def sqrt(n):
@@ -41,7 +41,8 @@ class IMU:
         self.imu = MPU9250.MPU9250(smbus.SMBus(1), endereco)
         self.imu.begin()
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
-        self.sensorfusion = kalman.Kalman()
+        self.sensorfusion = madgwick.Madgwick(0.5)
+
         self.currTime = time.time()
         self.newTime = time.time()
     def __Atualizar(self):
