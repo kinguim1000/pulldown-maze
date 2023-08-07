@@ -43,6 +43,7 @@ class IMU:
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
         self.sensorfusion = kalman.Kalman()
         self.currTime = time.time()
+        self.newTime = time.time()
     def __Atualizar(self):
         
         self.imu.readSensor()
