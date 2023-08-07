@@ -42,14 +42,14 @@ class IMU:
         self.imu.begin()
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
         self.sensorfusion = kalman.Kalman()
-        currTime = time.time()
+        self.currTime = time.time()
     def __Atualizar(self):
         
         self.imu.readSensor()
         self.imu.computeOrientation()
-        newTime = time.time()
-        dt = newTime - currTime
-        currTime = newTime
+        self.newTime = time.time()
+        self.dt = newTime - currTime
+        self.currTime = newTime
         sensorfusion.computeAndUpdateRollPitchYaw(imu.AccelVals[0], imu.AccelVals[1], imu.AccelVals[2], imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2], imu.MagVals[0], imu.MagVals[1], imu.MagVals[2], dt)
         return
     def yaw(self):
