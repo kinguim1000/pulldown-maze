@@ -275,7 +275,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza�
             if(self._acumulador[1] >= 1):
                 string = string +str(self._acumulador[1])+" rotações completas e "
             string = string +str(self._intencao[1])+" cm"
-        print(string + str(self._imu.pitch()))
+        print(string + str(self._imu.yaw()))
         return
 
     def Virar(self,lado,angulo):
