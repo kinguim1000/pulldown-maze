@@ -212,7 +212,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
     def __VirarDireita(self):
         vel = self._vel
-        if(self._imu.yaw() < self._acumulador + self._intencao[1]):
+        if(self._imu.yaw() > self._acumulador - self._intencao[1]):
             self._motores[0].move(vel)
             self._motores[1].move(vel)
             self._motores[2].move(vel)
@@ -224,7 +224,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
     def __VirarEsquerda(self):
         vel = self._vel
-        if(self._imu.yaw() > self._acumulador - self._intencao[1]):
+        if(self._imu.yaw() < self._acumulador + self._intencao[1]):
             self._motores[0].move(-vel)
             self._motores[1].move(-vel)
             self._motores[2].move(-vel)
@@ -242,6 +242,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
         if(self._acumulador[1] > 0):
             self._motores[0].move(vel)
+        self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
             self._motores[1].move(-vel)
             self._motores[2].move(vel)
             self._motores[3].move(-vel)
