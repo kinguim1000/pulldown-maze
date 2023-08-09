@@ -44,7 +44,7 @@ def encoder():
     else:
         return [matrix[0],0]
 
-def turnRight():
+def turnRight(vel):
     idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente 
     start = encoder()[0];
 
@@ -75,7 +75,7 @@ def turnRight():
             motor3.move(vel)
             motor4.move(vel)
 
-def turnLeft():
+def turnLeft(vel):
     idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
     start = encoder()[0];#teoria escolhe ja o melhor motor para fazer essa decisão
 
@@ -109,7 +109,7 @@ def turnLeft():
 
 def frente(vel):
     cont = 0
-    lookup = {0:4,1:5,2:0,3:1,4:2,5:3}
+    lookup = {0:4,1:5,2:0,3:1,4:2,5:3}#meia rotação
     #,motor2.se
     # tor(),motor3.setor(),motor4.setor()
     valorInicial = [motor1.setor()]
@@ -133,10 +133,80 @@ def frente(vel):
             motor3.move(0)
             motor4.move(0)
             break
-        
+
+
+def aux1():
+    atualizar()
+    if(matrix[3]< 138 or matrix[3] > 181): #usar outro motor pra pegar pos
+        return [matrix[3],3]
+    elif(matrix[2]< 138 or matrix[2] > 181):
+        return [matrix[2],2]
+    elif(matrix[1]< 138 or matrix[1] > 181):
+        return [matrix[1],1]
+    else:
+        return [matrix[0],0]
+def frente2(vel):
+    idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+    start = aux()[0];
+    atualizar()
+    lookup = {0:1, 1:0, 2:0, 4:1}
+    if(start< 138 or start > 181):
+        if lookup[idMotor]:
+            a = start - 180
+            if a < 0:
+                a += 360
+            while matrix[idMotor] > a: #-> se a for menor q 360 ele vai ser entre -48 e -180 então entra certo
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+        else:
+            while matrix[idMotor] < (start + 180)%360:#se passar de 360 volta pro range normal
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+    else:
+        if lookup[idMotor]:
+            resto = 180 - (360 - start)  
+            while(matrix[idMotor] <200):
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+            idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+            start = aux()[0];
+            atualizar()
+            while matrix[idMotor] < start + resto:
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+        else:
+            resto = 180 - start  
+            while(matrix[idMotor] >0):
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+            idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+            start = aux()[0];
+            atualizar()
+            while(matrix[idMotor] > start - resto):
+                atualizar()
+                motor1.move(vel)
+                motor2.move(-vel)
+                motor3.move(-vel)
+                motor4.move(vel)
+        #ou menor n sei depende se aumenta ou diminui
         # and motor2.setor() != valorInicial[2] and motor3.setor() != valorInicial[3] and motor4.setor() != valorInicial[4]
     
-VirarDireita(500) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
+turnLeft(500) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 
 
 
