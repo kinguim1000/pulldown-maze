@@ -57,17 +57,18 @@ def turnRight():
             motor3.move(vel)
             motor4.move(vel)
     else:
-        if matrix[idMotor]%360 > 48:
-            resto = matrix[idMotor] % 360
-        else:
-            resto = 48
+        resto = matrix[idMotor] % 360
+        
         while(matrix[idMotor] > 1):
             atualizar()
             motor1.move(vel)
             motor2.move(vel)
             motor3.move(vel)
             motor4.move(vel)
-        while(matrix[idMotor]> (360 - resto) ):
+        idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente 
+        start = encoder()[0];
+        
+        while(matrix[idMotor] > start - resto ):
             atualizar()
             motor1.move(vel)
             motor2.move(vel)
@@ -87,17 +88,18 @@ def turnLeft():
             motor3.move(-vel)
             motor4.move(-vel)
     else:
-        if matrix[idMotor]%360 > 48:
-            resto = matrix[idMotor]%360-48
-        else:
-            resto = 48
+        
+        resto = matrix[idMotor]%360-48
+        
         while(matrix[idMotor] < 200):#estar entre 228 e 318
             atualizar()
             motor1.move(-vel)
             motor2.move(-vel)
             motor3.move(-vel)
             motor4.move(-vel)
-        while matrix[idMotor] < resto: 
+        idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+        start = encoder()[0];
+        while(matrix[idMotor] < start + resto ):
             atualizar()
             motor1.move(-vel)
             motor2.move(-vel)
