@@ -52,28 +52,19 @@ def turnRight(vel):
     if(matrix[idMotor] > 90):#garantir( sendo que acima ja tem 4 verificações de qual usar ( tem que ver se para tras tbm vale os valores))
         while(matrix[idMotor] > start-90): #não sei se é maior ou menor que
             atualizar()
-            motor1.move(vel)
-            motor2.move(vel)
-            motor3.move(vel)
-            motor4.move(vel)
+            irDireita(vel)
     else:
         resto = matrix[idMotor] % 360
         
         while(matrix[idMotor] > 1):
             atualizar()
-            motor1.move(vel)
-            motor2.move(vel)
-            motor3.move(vel)
-            motor4.move(vel)
+            irDireita(vel)
         idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente 
         start = encoder()[0];
         
         while(matrix[idMotor] > start - resto ):
             atualizar()
-            motor1.move(vel)
-            motor2.move(vel)
-            motor3.move(vel)
-            motor4.move(vel)
+            irDireita(vel)
 
 def turnLeft(vel):
     idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
@@ -83,28 +74,19 @@ def turnLeft(vel):
     if(matrix[idMotor] < 228):
         while(matrix[idMotor] < start+90): #não sei se é maior ou menor que
             atualizar()
-            motor1.move(-vel)
-            motor2.move(-vel)
-            motor3.move(-vel)
-            motor4.move(-vel)
+            irEsquerda(vel)
     else:
         
         resto = matrix[idMotor]%360-48
         
         while(matrix[idMotor] < 200):#estar entre 228 e 318
             atualizar()
-            motor1.move(-vel)
-            motor2.move(-vel)
-            motor3.move(-vel)
-            motor4.move(-vel)
+            irEsquerda(vel)
         idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
         start = encoder()[0];
         while(matrix[idMotor] < start + resto ):
             atualizar()
-            motor1.move(-vel)
-            motor2.move(-vel)
-            motor3.move(-vel)
-            motor4.move(-vel)
+            irEsquerda(vel)
         
 
 def frente(vel):
@@ -157,55 +139,51 @@ def frente2(vel):
                 a += 360
             while matrix[idMotor] > a: #-> se a for menor q 360 ele vai ser entre -48 e -180 então entra certo
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
         else:
             while matrix[idMotor] < (start + 180)%360:#se passar de 360 volta pro range normal
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
     else:
         if lookup[idMotor]:
             resto = 180 - (360 - start)  
             while(matrix[idMotor] <200):
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
             idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
             start = aux()[0];
             atualizar()
             while matrix[idMotor] < start + resto:
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
         else:
             resto = 180 - start  
             while(matrix[idMotor] >0):
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
             idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
             start = aux()[0];
             atualizar()
             while(matrix[idMotor] > start - resto):
                 atualizar()
-                motor1.move(vel)
-                motor2.move(-vel)
-                motor3.move(-vel)
-                motor4.move(vel)
+                irFrente(vel)
         #ou menor n sei depende se aumenta ou diminui
         # and motor2.setor() != valorInicial[2] and motor3.setor() != valorInicial[3] and motor4.setor() != valorInicial[4]
-    
+def irFrente(vel):
+    motor1.move(vel)
+    motor2.move(-vel)
+    motor3.move(-vel)
+    motor4.move(vel)
+def irEsquerda(vel):
+    motor1.move(-vel)
+    motor2.move(-vel)
+    motor3.move(-vel)
+    motor4.move(-vel)
+def irDireita(vel):
+    motor1.move(vel)
+    motor2.move(vel)
+    motor3.move(vel)
+    motor4.move(vel)
 turnLeft(500) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 
 
