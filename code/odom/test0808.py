@@ -131,7 +131,7 @@ def frente2(vel):
     idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
     start = aux()[0];
     atualizar()
-    lookup = {0:1, 1:0, 2:0, 4:1}
+    lookup = {0:1, 1:0, 2:0, 3:1}
     if(start< 138 or start > 181):
         if lookup[idMotor]:
             a = start - 180
@@ -184,6 +184,7 @@ def irDireita(vel):
     motor2.move(vel)
     motor3.move(vel)
     motor4.move(vel)
+
 turnLeft(500) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 
 
