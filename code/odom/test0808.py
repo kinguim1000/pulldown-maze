@@ -58,7 +58,7 @@ def encoder():
         print([posicao(0),0])
         return [posicao(0),0]
 
-def turnRight(vel):
+def turnLeft(vel):
     idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
     start = encoder()[0];
     print("entrou")
@@ -90,7 +90,7 @@ def turnRight(vel):
             #atualizar()
             irEsquerda(vel)
 
-def turnLeft(vel):
+def turnRight(vel):
     idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
     start = encoder()[0];#teoria escolhe ja o melhor motor para fazer essa decisão
 
