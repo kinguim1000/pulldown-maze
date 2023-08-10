@@ -23,7 +23,7 @@ class motor:
         # else:
         #     return(5)
     def pos(self):
-        return str(math.floor(LX16A(self.porta).get_physical_angle()+48))#arredondar o mais perto -> transforma -48 em 0, -48 -30 0  0 30 60  90 150 210 270f
+        return math.floor(LX16A(self.porta).get_physical_angle()+48)#arredondar o mais perto -> transforma -48 em 0, -48 -30 0  0 30 60  90 150 210 270f
     def move(self,vel1):
         LX16A(self.porta).motor_mode(vel1)
 motor1 = motor(1)
@@ -35,7 +35,7 @@ def atualizar():
     matrix = [motor1.pos(),motor2.pos(),motor3.pos(),motor4.pos()]
 def encoder():
     atualizar()
-    if(matrix[3]> 45 and matrix[3] < 273): #usar outro motor pra pegar pos
+    if(matrix[3] > 45 and matrix[3] < 273): #usar outro motor pra pegar pos
         return [matrix[3],3]
     elif(matrix[2]> 45 and matrix[2] < 273):
         return [matrix[2],2]
