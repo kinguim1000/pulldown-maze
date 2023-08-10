@@ -72,8 +72,8 @@ def turnRight(vel):
             print(posicao(idMotor))
             irEsquerda(vel)
     else:
-        resto = posicao(idMotor) % 360
-        
+        resto = 90 - start 
+        print(resto)
         while(posicao(idMotor) > 1):
             print("situaçao menor q 1")
             print(posicao(idMotor))
