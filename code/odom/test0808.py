@@ -31,7 +31,7 @@ motor2 = motor(4)
 motor3 = motor(2)
 motor4 = motor(3)
 # posicao = [motor1.pos(),motor2.pos(),motor3.pos(),motor4.pos()]#pra n dar problema de escopo
-# def atualizar():
+# def #atualizar():
 #     posicao = [motor1.pos(),motor2.pos(),motor3.pos(),motor4.pos()]
 def posicao(num):
     if num == 1:
@@ -43,7 +43,7 @@ def posicao(num):
     if num == 4:
         return motor4.pos()
 def encoder():
-    atualizar()
+    #atualizar()
     
     if(posicao(3) > 45 and posicao(3) < 273): #usar outro motor pra pegar pos
         print([posicao(3),3])
@@ -59,35 +59,35 @@ def encoder():
         return [posicao(0),0]
 
 def turnRight(vel):
-    idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente 
+    idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
     start = encoder()[0];
 
-    atualizar()
+    #atualizar()
     if(posicao(idMotor) > 90):#garantir( sendo que acima ja tem 4 verificações de qual usar ( tem que ver se para tras tbm vale os valores))
         while(posicao(idMotor) > start-90): #não sei se é maior ou menor que
-            atualizar()
+            #atualizar()
             irDireita(vel)
     else:
         resto = posicao(idMotor) % 360
         
         while(posicao(idMotor) > 1):
-            atualizar()
+            #atualizar()
             irDireita(vel)
-        idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente 
+        idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
         start = encoder()[0];
         
         while(posicao(idMotor) > start - resto ):
-            atualizar()
+            #atualizar()
             irDireita(vel)
 
 def turnLeft(vel):
-    idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+    idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
     start = encoder()[0];#teoria escolhe ja o melhor motor para fazer essa decisão
 
-    atualizar()
+    #atualizar()
     if(posicao(idMotor) < 228):
         while(posicao(idMotor) < start+90): #não sei se é maior ou menor que
-            atualizar()
+            #atualizar()
             print(posicao(idMotor))
             irEsquerda(vel)
     else:
@@ -95,13 +95,13 @@ def turnLeft(vel):
         resto = posicao(idMotor)%(360-48)
         
         while(posicao(idMotor) < 200):#estar entre 228 e 318
-            atualizar()
+            #atualizar()
             print("2")
             irEsquerda(vel)
-        idMotor = encoder()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+        idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
         start = encoder()[0];
         while(posicao(idMotor) < start + resto ):
-            atualizar()
+            #atualizar()
             print("3")
             irEsquerda(vel)
         
@@ -135,7 +135,7 @@ def frente(vel):
 
 
 def aux():
-    atualizar()
+    #atualizar()
     if(posicao(3)< 138 or posicao(3) > 181): #usar outro motor pra pegar pos
         return [posicao(3),3]
     elif(posicao(2)< 138 or posicao(2) > 181):
@@ -145,9 +145,9 @@ def aux():
     else:
         return [posicao(0),0]
 def frente2(vel):
-    idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+    idMotor = aux()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
     start = aux()[0];
-    atualizar()
+    #atualizar()
     lookup = {0:1, 1:0, 2:0, 3:1}
     if(start< 138 or start > 181):
         if lookup[idMotor]:
@@ -155,34 +155,34 @@ def frente2(vel):
             if a < 0:
                 a += 360
             while posicao(idMotor) > a: #-> se a for menor q 360 ele vai ser entre -48 e -180 então entra certo
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
         else:
             while posicao(idMotor) < (start + 180)%360:#se passar de 360 volta pro range normal
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
     else:
         if lookup[idMotor]:
             resto = 180 - (360 - start)  
             while(posicao(idMotor) <200):
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
-            idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+            idMotor = aux()[1];#isso aqui tem que ##atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
             start = aux()[0];
-            atualizar()
+            ##atualizar()
             while posicao(idMotor) < start + resto:
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
         else:
             resto = 180 - start  
             while(posicao(idMotor) >0):
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
-            idMotor = aux()[1];#isso aqui tem que atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
+            idMotor = aux()[1];#isso aqui tem que ##atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
             start = aux()[0];
-            atualizar()
+            ##atualizar()
             while(posicao(idMotor) > start - resto):
-                atualizar()
+                ##atualizar()
                 irFrente(vel)
         #ou menor n sei depende se aumenta ou diminui
         # and motor2.setor() != valorInicial(2) and motor3.setor() != valorInicial[3] and motor4.setor() != valorInicial[4]
