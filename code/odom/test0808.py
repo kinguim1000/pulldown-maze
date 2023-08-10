@@ -70,7 +70,7 @@ def turnRight(vel):
             #atualizar()
             print("situaçao maior q 90")
             print(posicao(idMotor))
-            irDireita(vel)
+            irEsquerda(vel)
     else:
         resto = posicao(idMotor) % 360
         
@@ -79,7 +79,7 @@ def turnRight(vel):
             print(posicao(idMotor))
 
             #atualizar()
-            irDireita(vel)
+            irEsquerda(vel)
         idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
         start = encoder()[0];
         
@@ -88,7 +88,7 @@ def turnRight(vel):
             print(posicao(idMotor))
 
             #atualizar()
-            irDireita(vel)
+            irEsquerda(vel)
 
 def turnLeft(vel):
     idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
@@ -100,7 +100,7 @@ def turnLeft(vel):
             #atualizar()
             print('situaçao menor q 228')
             print(posicao(idMotor))
-            irEsquerda(vel)
+            irDireita(vel)
     else:
         
         resto = posicao(idMotor)%(360-48)
@@ -110,14 +110,14 @@ def turnLeft(vel):
             
             print('situacao maior q 200')
             print(posicao(idMotor))
-            irEsquerda(vel)
+            irDireita(vel)
         idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
         start = encoder()[0];
         while(posicao(idMotor) < start + resto ):
             #atualizar()
             print("situaçaoterminando giro")
             print(posicao(idMotor))
-            irEsquerda(vel)
+            irDireita(vel)
         
 
 def frente(vel):
