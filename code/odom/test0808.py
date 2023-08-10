@@ -103,9 +103,9 @@ def turnRight(vel):
             irDireita(vel)
     else:
         
-        resto = posicao(idMotor)%(360-48)
+        resto = 90 - (300 - posicao(idMotor))   #maior q 228
         
-        while(posicao(idMotor) > 200):#estar entre 228 e 318
+        while(posicao(idMotor) > 200 and posicao(idMotor) < 300):#estar entre 228 e 318
             #atualizar()
             
             print('situacao maior q 200')
