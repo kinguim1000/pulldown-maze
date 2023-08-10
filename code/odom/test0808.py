@@ -35,6 +35,7 @@ def atualizar():
     matrix = [motor1.pos(),motor2.pos(),motor3.pos(),motor4.pos()]
 def encoder():
     atualizar()
+    print("a")
     if(matrix[3] > 45 and matrix[3] < 273): #usar outro motor pra pegar pos
         return [matrix[3],3]
     elif(matrix[2]> 45 and matrix[2] < 273):
