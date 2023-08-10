@@ -117,7 +117,7 @@ def frente(vel):
             break
 
 
-def aux1():
+def aux():
     atualizar()
     if(matrix[3]< 138 or matrix[3] > 181): #usar outro motor pra pegar pos
         return [matrix[3],3]
