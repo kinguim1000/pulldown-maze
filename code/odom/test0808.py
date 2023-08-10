@@ -61,22 +61,32 @@ def encoder():
 def turnRight(vel):
     idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
     start = encoder()[0];
-
+    print("entrou")
+    print(idMotor)
+    print(start)
     #atualizar()
     if(posicao(idMotor) > 90):#garantir( sendo que acima ja tem 4 verificações de qual usar ( tem que ver se para tras tbm vale os valores))
         while(posicao(idMotor) > start-90): #não sei se é maior ou menor que
             #atualizar()
+            print("situaçao maior q 90")
+            print(posicao(idMotor))
             irDireita(vel)
     else:
         resto = posicao(idMotor) % 360
         
         while(posicao(idMotor) > 1):
+            print("situaçao menor q 1")
+            print(posicao(idMotor))
+
             #atualizar()
             irDireita(vel)
         idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
         start = encoder()[0];
         
         while(posicao(idMotor) > start - resto ):
+            print("situaçao terminando o giro")
+            print(posicao(idMotor))
+
             #atualizar()
             irDireita(vel)
 
@@ -88,21 +98,25 @@ def turnLeft(vel):
     if(posicao(idMotor) < 228):
         while(posicao(idMotor) < start+90): #não sei se é maior ou menor que
             #atualizar()
+            print('situaçao menor q 228')
             print(posicao(idMotor))
             irEsquerda(vel)
     else:
         
         resto = posicao(idMotor)%(360-48)
         
-        while(posicao(idMotor) < 200):#estar entre 228 e 318
+        while(posicao(idMotor) > 200):#estar entre 228 e 318
             #atualizar()
-            print("2")
+            
+            print('situacao maior q 200')
+            print(posicao(idMotor))
             irEsquerda(vel)
         idMotor = encoder()[1];#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
         start = encoder()[0];
         while(posicao(idMotor) < start + resto ):
             #atualizar()
-            print("3")
+            print("situaçaoterminando giro")
+            print(posicao(idMotor))
             irEsquerda(vel)
         
 
