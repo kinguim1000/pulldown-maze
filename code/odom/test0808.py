@@ -35,14 +35,18 @@ def atualizar():
     matrix = [motor1.pos(),motor2.pos(),motor3.pos(),motor4.pos()]
 def encoder():
     atualizar()
-    print("a")
+    
     if(matrix[3] > 45 and matrix[3] < 273): #usar outro motor pra pegar pos
+        print[matrix[3],3]
         return [matrix[3],3]
     elif(matrix[2]> 45 and matrix[2] < 273):
+        print[matrix[2],2]
         return [matrix[2],2]
     elif(matrix[1]> 45 and matrix[1] < 273):
+        print[matrix[1],1]
         return [matrix[1],1]
     else:
+        print[matrix[0],0]
         return [matrix[0],0]
 
 def turnRight(vel):
