@@ -7,7 +7,10 @@ LX16A.initialize("/dev/ttyUSB0")
 from imusensor.MPU9250 import MPU9250
 from imusensor.filters import madgwick
 import smbus
-
+def sign(c):
+    if(c < 0):
+        return -1
+    return 1
 def sqrt(n):
     x = n
     for i in range(10):
@@ -42,11 +45,9 @@ class IMU:
         self.imu.begin()
         self.imu.loadCalibDataFromFile("/home/pi/calib_real4.json")
         self.sensorfusion = madgwick.Madgwick(0.5)
-
         self.currTime = time.time()
         self.newTime = time.time()
     def __Atualizar(self):
-        
         self.imu.readSensor()
         self.imu.computeOrientation()
         self.newTime = time.time()
@@ -55,16 +56,16 @@ class IMU:
         #self.sensorfusion.computeAndUpdateRollPitchYaw(self.imu.AccelVals[0], self.imu.AccelVals[1], self.imu.AccelVals[2], self.imu.GyroVals[0], self.imu.GyroVals[1], self.imu.GyroVals[2], self.imu.MagVals[0], self.imu.MagVals[1], self.imu.MagVals[2], self.dt)
         self.sensorfusion.updateRollPitchYaw(self.imu.AccelVals[0], self.imu.AccelVals[1], self.imu.AccelVals[2], self.imu.GyroVals[0], self.imu.GyroVals[1], self.imu.GyroVals[2], self.imu.MagVals[0], self.imu.MagVals[1], self.imu.MagVals[2], self.dt)
         return
-    def yaw(self):
+    def yaw(self): 
         self.__Atualizar()
-        return self.sensorfusion.yaw +180
+        return self.sensorfusion.yaw + 180
+        
     def pitch(self):
         self.__Atualizar()
         return self.sensorfusion.pitch
     def Aceleracao(self):
         self.__Atualizar()
-        return self.imu.AccelVals
-    
+        return self.imu.AccelVals    
 class SD:
     def __init__(self,buffersize):
         self.buffersize = buffersize
@@ -76,7 +77,10 @@ class SD:
         size = len(self.buffer)
         for i in range(size):
             avg += self.buffer[i]
-        return avg/size
+        if size != 0:
+            return avg/size
+        else:
+            return 0
 
     def Desvio(self):
         variancia = 0
@@ -156,7 +160,9 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
             4:"Boot"
             #toda vez que quiser adicionar uma a√ß√£o continua nova, colocar aqui para ficar facil de saber o que diabos faz
         }
-    
+        for i in range(1000):
+           self._imu.yaw()
+
     def __KillMotors(self):
         self._motores[0].move(0)
         self._motores[1].move(0)
@@ -219,7 +225,8 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
     def __VirarDireita(self): 
         vel = self._vel
-        if(self._imu.yaw() > (self._acumulador - self._intencao[1] + 360)%360):
+        self._sd.Atualizar(self._imu.yaw())
+        if(sign(self._acumulador - self._intencao[1])*self._sd.Avg() > ((self._acumulador - self._intencao[1] + 360)%360)*sign(self._acumulador - self._intencao[1])):
             self._motores[0].move(vel)
             self._motores[1].move(vel)
             self._motores[2].move(vel)
@@ -277,7 +284,7 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
             if(self._acumulador[1] >= 1):
                 string = string +str(self._acumulador[1])+" rota√ß√µes completas e "
             string = string +str(self._intencao[1])+" cm"
-        print(string + str(self._imu.yaw()))
+        print(string + str(self._sd.Avg()))
         return
 
     def Virar(self,lado,angulo):
@@ -328,7 +335,9 @@ class Robo: #Classe que vai segurar... Tudo... em teoria vai ajudar na organiza√
 
 PulldownMaze = Robo(2,1,4,3)
 PulldownMaze.Virar(0,90)
-
+#Imu = IMU(0x68)
+#sd = SD(100)
 while(True):
     PulldownMaze.Main()
+    #print(Imu.yaw())
     #isso √© o mais proximo de "if going_to_crash: Dont()" que vamos chegar, eu acho 
