@@ -79,7 +79,7 @@ def turnLeft(vel):
     if(matrix[idMotor] < 228):
         while(matrix[idMotor] < start+90): #não sei se é maior ou menor que
             atualizar()
-            print("1")
+            print(matrix[idMotor])
             irEsquerda(vel)
     else:
         
