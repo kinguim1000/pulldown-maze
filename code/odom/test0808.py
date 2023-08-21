@@ -221,7 +221,8 @@ def parar():
     motor3.move(0)
     motor4.move(0)
 turnLeft(200)
-turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
+turnLeft(200)
+ #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 
 parar();
 
