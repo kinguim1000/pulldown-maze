@@ -32,7 +32,7 @@ def abs(a):
         return -a
     return a
 def mapa(input):
-    return (1000/(1+(50/abs(input))))*sign(input)
+    return (1000/(1+(100/abs(input))))*sign(input)
 
 
 
