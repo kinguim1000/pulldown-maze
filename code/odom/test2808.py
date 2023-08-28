@@ -32,7 +32,7 @@ def abs(a):
         return -a
     return a
 def mapa(input):
-    return (900/(1+(40/(abs(input)+0.00001))))*sign(input)
+    return (600/(1+(10/(abs(input)+0.00001))))*sign(input)
 
 
 
@@ -310,24 +310,25 @@ def abs(a):
         return -a
     return a
 
+def err(motor,input):
+    
+    return  
 def frente4(vel):
-    a = PID(0.4,0,5) 
+    a = PID(0.5,0,0) 
     initial = encoder()
+    k = {0:-1,1:-1,2:1,3:1}
     a.atualizar(posicao(initial[1])-initial[0])
-    while(abs(posicao(initial[1])-initial[0])<20):
-        irFrente(vel)
-    while(abs(posicao(initial[1])-initial[0])>15):
-        irFrente(int(mapa(a.out(abs(posicao(initial[1])-initial[0])))))
+    while(abs(posicao(initial[1]))-initial[0] > 5):
+        frente(a.out(k[initial[1]]*((2*(posicao(initial[1])>initial[0])-1)*(-360+posicao(initial[1])-initial[0])%360)))
     parar()
 
 def tras(vel):
-    a = PID(0.5,0,5) 
+    a = PID(2,0,0) 
     initial = encoder()
     a.atualizar(posicao(initial[1])-initial[0])
-    while(abs(posicao(initial[1])-initial[0])<20):
+    while(abs(posicao(initial[1])-initial[0])<10):
         irTras(vel)
-    while(abs(posicao(initial[1])-initial[0])>15):
-        print(posicao(initial[1]))
+    while(abs(posicao(initial[1])-initial[0])>5):
         irTras(int(mapa(a.out(abs(posicao(initial[1])-initial[0])))))
     parar()
 
@@ -360,9 +361,8 @@ def parar():
 #turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 #turnLeft(200)
 #turnLeft(200)
-while(True):
-    frente4(300)
-    tras(300)
+frente4(300)
+tras(300)
 
 
 
