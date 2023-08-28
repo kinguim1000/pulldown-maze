@@ -318,7 +318,7 @@ def frente4(vel):
         irFrente(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
         a.atualizar(abs(initial[1]-initial[0]))
-        irFrente(mapa(vel,a.out(abs(initial[1]-initial[0]))))
+        irFrente(int(mapa(vel,a.out(abs(initial[1]-initial[0])))))
     parar()
 
 def tras(vel):
