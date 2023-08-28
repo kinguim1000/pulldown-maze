@@ -2,7 +2,6 @@ from pylx16a.lx16a import *
 import time
 import math
 import string
-import funcAux.py
 LX16A.initialize("/dev/ttyUSB0")
 
 
