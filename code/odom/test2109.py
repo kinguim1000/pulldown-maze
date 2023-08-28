@@ -317,7 +317,7 @@ def frente4(vel):
     while(abs(posicao(initial[1])-initial[0])<10):
         irFrente(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
-        irFrente(int(mapa(a.out(abs(initial[1]-initial[0]+5)))))
+        irFrente(int(mapa(a.out(abs(initial[1]-initial[0])))))
     parar()
 
 def tras(vel):
@@ -327,7 +327,7 @@ def tras(vel):
     while(abs(posicao(initial[1])-initial[0])<10):
         irTras(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
-        irTras(int(mapa(a.out(abs(initial[1]-initial[0]+5)))))
+        irTras(int(mapa(a.out(abs(initial[1]-initial[0])))))
     parar()
 
 def irFrente(vel):
