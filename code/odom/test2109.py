@@ -320,7 +320,7 @@ def frente4(vel):
         irFrente(int(mapa(a.out(abs(initial[1]-initial[0]+5)))))
     parar()
 
-def frente4(vel):
+def tras(vel):
     a = PID(2,0,0) 
     initial = encoder()
     a.atualizar(initial[1]-initial[0])
