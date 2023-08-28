@@ -284,11 +284,24 @@ def frente4(vel):
         irFrente(vel)
     parar()
 
+def tras(vel):
+    initial = encoder()
+    while(abs(posicao(initial[1])-initial[0])<10):
+        irTras(vel)
+    while(abs(posicao(initial[1])-initial[0])>5):
+        irTras(vel)
+    parar()
+
 def irFrente(vel):
     motor1.move(-vel)
     motor2.move(-vel)
     motor3.move(vel)
     motor4.move(vel)
+def irTras(vel):
+    motor1.move(vel)
+    motor2.move(vel)
+    motor3.move(-vel)
+    motor4.move(-vel)
 def irEsquerda(vel):
     motor1.move(-vel)
     motor2.move(-vel)
@@ -308,8 +321,8 @@ def parar():
 #turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 #turnLeft(200)
 #turnLeft(200)
-frente4(600)
-
+frente4(300)
+tras(300)
 
 
 
