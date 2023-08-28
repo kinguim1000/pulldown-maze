@@ -14,11 +14,11 @@ class PID:
         self.kd = D
         self.prev = 0
         self.anterior = 0;
-    def atualizar(self,error):
+    def atualizar(self,erro):
         self.prev += erro
         self.anterior = erro
     def out (self,erro):
-        self.atualizar(error)
+        self.atualizar(erro)
         return self.kp*erro + self.ki*self.prev + self.kd*(erro - self.anterior)
 
 def sign(a):
