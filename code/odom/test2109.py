@@ -312,8 +312,8 @@ def abs(a):
 
 def frente4(vel):
     a = PID(2,0,0) 
-    a.atualizar(initial[1]-initial[0])
     initial = encoder()
+    a.atualizar(initial[1]-initial[0])
     while(abs(posicao(initial[1])-initial[0])<10):
         irFrente(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
