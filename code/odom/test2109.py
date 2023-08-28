@@ -31,8 +31,8 @@ def abs(a):
     if a < 0:
         return -a
     return a
-def mapa(max,input):
-    return (max/(1+((max/2)/abs(input))))*sign(input)
+def mapa(input):
+    return (1000/(1+(1000/abs(input))))*sign(input)
 
 
 
@@ -318,7 +318,7 @@ def frente4(vel):
         irFrente(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
         a.atualizar(abs(initial[1]-initial[0]))
-        irFrente(int(mapa(vel,a.out(abs(initial[1]-initial[0])))))
+        irFrente(int(mapa(a.out(abs(initial[1]-initial[0])))))
     parar()
 
 def tras(vel):
