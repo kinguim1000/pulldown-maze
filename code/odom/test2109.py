@@ -2,6 +2,7 @@ from pylx16a.lx16a import *
 import time
 import math
 import string
+import funcAux.py
 LX16A.initialize("/dev/ttyUSB0")
 
 class motor:
@@ -277,11 +278,14 @@ def abs(a):
     return a
 
 def frente4(vel):
+    a = PID(2,0,0) 
+    a.atualizar(initial[1]-initial[0])
     initial = encoder()
     while(abs(posicao(initial[1])-initial[0])<10):
         irFrente(vel)
     while(abs(posicao(initial[1])-initial[0])>5):
-        irFrente(vel)
+        a.atualizar(abs(initial[1]-initial[0]))
+        irFrente(mapa(vel,a.out(abs(initial[1]-initial[0]))))
     parar()
 
 def tras(vel):
