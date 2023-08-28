@@ -271,6 +271,18 @@ def frente3(vel):
                 print("situacao terminando giroaaaaa")
                 print(posicao(idMotor))
                 irFrente(vel)
+def abs(a):
+    if a < 0:
+        return -a
+    return a
+
+def frente4(vel):
+    initial = encoder()
+    while(abs(posicao(initial[1])-initial[0])<10):
+        irFrente(vel)
+    while(abs(posicao(initial[1])-initial[0])>5):
+        irFrente(vel)
+    parar()
 
 def irFrente(vel):
     motor1.move(-vel)
@@ -296,12 +308,9 @@ def parar():
 #turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 #turnLeft(200)
 #turnLeft(200)
-frente3(300)
+frente4(600)
 
-parar()
-turnRight(300)
-turnRight(300)
-parar()
+
 
 
 #######lembrar de refazer o frente -> troca de lado ====
