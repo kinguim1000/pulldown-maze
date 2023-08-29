@@ -32,7 +32,7 @@ def abs(a):
         return -a
     return a
 def mapa(input):
-    return (800/(1+(20/(abs(input)+0.00001))))*sign(input)
+    return (800/(1+(60/(abs(input)+0.00001))))*sign(input)
 
 
 
@@ -92,66 +92,37 @@ def encoder():
         print([posicao(0),0])
         return [posicao(0),0]
 
-def turnLeft(vel):
-    idMotor = encoder()[1]#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
-    start = encoder()[0]
-    print("entrou")
-    print(idMotor)
-    print(start)
-    #atualizar()
-    if(posicao(idMotor) > 120):#garantir( sendo que acima ja tem 4 verificações de qual usar ( tem que ver se para tras tbm vale os valores))
-        while(posicao(idMotor) > start-115): #não sei se é maior ou menor que
-            #atualizar()
-            print("situaçao maior q 100")
-            print(posicao(idMotor))
-            irEsquerda(vel)
-    else:
-        resto = 115 - start 
-        print(resto)
-        while(posicao(idMotor) > 1) and (posicao(idMotor) < 200):
-            print("situaçao menor q 1")
-            print(posicao(idMotor))
-
-            #atualizar()
-            irEsquerda(vel)
-        idMotor = encoder()[1]#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente 
-        start = encoder()[0]
-        
-        while(posicao(idMotor) > start - resto ):
-            print("situaçao terminando o giro")
-            print(posicao(idMotor))
-
-            #atualizar()
-            irEsquerda(vel)
+def turnLeft(angulo):
+    a = PID(0.5,0,5) 
+    initial = encoder()
+    k = {0:1,1:1,2:1,3:1}
+    a.atualizar(posicao(initial[1])-initial[0])
+    def d():
+        return 360*k[initial[1]] - ((k[initial[1]]*2)-1)*((initial[0]-posicao(initial[1])+360+ angulo)%360)
+    while(abs(posicao(initial[1])-initial[0])<40):
+        irEsquerda(600)
+    print(d())
+    while(d() > 40):
+        irEsquerda(int(mapa(a.out(d()))/2))
+        print(d(),posicao(initial[1]))
+    parar()
+    print(d())
 
 def turnRight(vel):
-    idMotor = encoder()[1]#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
-    start = encoder()[0]#teoria escolhe ja o melhor motor para fazer essa decisão
-
-    #atualizar()
-    if(posicao(idMotor) < 183):
-        while(posicao(idMotor) < start+115): #não sei se é maior ou menor que
-            #atualizar()
-            print('situaçao menor q 228')
-            print(posicao(idMotor))
-            irDireita(vel)
-    else:
-        
-        resto = 115 - (300 - posicao(idMotor))   #maior q 228
-        
-        while(posicao(idMotor) > 200 and posicao(idMotor) < 300):#estar entre 228 e 318
-            #atualizar()
-            
-            print('situacao maior q 200')
-            print(posicao(idMotor))
-            irDireita(vel)
-        idMotor = encoder()[1]#isso aqui tem que #atualizar a parte de cima pra ser os motores que vão pra frente(ou não caso for igual)
-        start = encoder()[0]
-        while(posicao(idMotor) < start + resto ):
-            #atualizar()
-            print("situacaoterminando giro")
-            print(posicao(idMotor))
-            irDireita(vel)
+    a = PID(0.5,0,5) 
+    initial = encoder()
+    k = {0:0,1:0,2:0,3:0}
+    a.atualizar(posicao(initial[1])-initial[0])
+    def d():
+        return 360*k[initial[1]] - ((k[initial[1]]*2)-1)*((initial[0]-posicao(initial[1])+360+ angulo)%360)
+    while(abs(posicao(initial[1])-initial[0])<40):
+        irDireita(600)
+    print(d())
+    while(d() > 40):
+        irDireita(int(mapa(a.out(d()))/2))
+        print(d(),posicao(initial[1]))
+    parar()
+    print(d())
         
 
 def frente(vel):
@@ -366,13 +337,15 @@ def parar():
     motor4.move(0)
 #turnRight(200)
 #turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
-#turnLeft(200)
-#turnLeft(200)
-while(True):
-    frente4(0)
-    frente4(110)
-    turnLeft(600)
-
+#turnLeft
+frente4(0)
+frente4(110)
+turnRight(0)
+turnRight(0)
+frente4(0)
+frente4(110)
+turnLeft(0)
+turnLeft(0)
 
 
 #######lembrar de refazer o frente -> troca de lado ====

@@ -3,7 +3,7 @@ import time
 import math
 import string
 LX16A.initialize("/dev/ttyUSB0")
-
+a
 
 
 
@@ -32,7 +32,7 @@ def abs(a):
         return -a
     return a
 def mapa(input):
-    return (800/(1+(20/(abs(input)+0.00001))))*sign(input)
+    return (600/(1+(10/(abs(input)+0.00001))))*sign(input)
 
 
 
@@ -313,21 +313,16 @@ def abs(a):
 def err(motor,input):
     
     return  
-def frente4(angulo):
-    a = PID(0.5,0,5) 
+def frente4(vel):
+    a = PID(0.5,0,1) 
     initial = encoder()
-    k = {0:1,1:1,2:0,3:0}
+    k = {0:0,1:0,2:1,3:1}
     a.atualizar(posicao(initial[1])-initial[0])
     def d():
-        return 360*k[initial[1]] - ((k[initial[1]]*2)-1)*((initial[0]-posicao(initial[1])+360+ angulo)%360)
-    while(abs(posicao(initial[1])-initial[0])<5):
-        irFrente(600)
-    print(d())
-    while(d() > 40):
+        return 360*k[initial[1]] - ((k[initial[1]]*2)-1)*(((sign(initial[0]-posicao(initial[1]))*abs(initial[0]-posicao(initial[1])))+360)%360)
+    while(d() > 20):
         irFrente(int(mapa(a.out(d()))))
-        print(d(),posicao(initial[1]))
-    parar()
-    print(d())
+       
 
 def tras(vel):
     a = PID(2,0,0) 
@@ -368,10 +363,8 @@ def parar():
 #turnRight(200) #20,5 aproximadamente a rotação 3,4 cm pra frente. tanto de começo como pra fim
 #turnLeft(200)
 #turnLeft(200)
-while(True):
-    frente4(0)
-    frente4(110)
-    turnLeft(600)
+frente4(300)
+tras(300)
 
 
 
